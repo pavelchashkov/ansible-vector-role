@@ -1,0 +1,26 @@
+---
+vector_version: 0.23.0
+vector_config_dir: /var/lib/vector
+vector_config:
+  data_dir: "{{ vector_config_dir }}"
+  sources:
+    file_logs:
+      type: file
+      acknowledgements: null
+      ignore_older_secs: 600
+      include:
+        - /var/log/**/*.log
+      read_from: beginning
+  sinks:
+    clickhouse:
+      type: clickhouse
+      inputs:
+        - file_logs
+      database: mydatabase
+      endpoint: http://localhost:8123
+      table: mytable
+      acknowledgements: null
+      compression: gzip
+      encoding: null
+      healthcheck: null
+      skip_unknown_fields: null
